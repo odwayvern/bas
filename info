@@ -1,0 +1,33 @@
+// src/components/TokenInfo.js
+import React, { useEffect, useState } from 'react';
+
+const TokenInfo = ({ contract }) => {
+  const [name, setName] = useState('');
+  const [symbol, setSymbol] = useState('');
+  const [totalSupply, setTotalSupply] = useState('');
+
+  useEffect(() => {
+    const fetchTokenData = async () => {
+      const tokenName = await contract.methods.name().call();
+      const tokenSymbol = await contract.methods.symbol().call();
+      const tokenSupply = await contract.methods.totalSupply().call();
+      
+      setName(tokenName);
+      setSymbol(tokenSymbol);
+      setTotalSupply(tokenSupply);
+    };
+
+    fetchTokenData();
+  }, [contract]);
+
+  return (
+    <div>
+      <h2>Token Information</h2>
+      <p><strong>Name:</strong> {name}</p>
+      <p><strong>Symbol:</strong> {symbol}</p>
+      <p><strong>Total Supply:</strong> {totalSupply}</p>
+    </div>
+  );
+};
+
+export default TokenInfo;
